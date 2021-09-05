@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+Add Post
+{% endblock %}
+
+{% block content%}
+
+
+{% if user.is_authenticated %}
+    <h2>Add Post</h2>
+    <br><br>
+    <div class="form-group">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ form.media }}
+            {{ form.as_p }}
+
+            <button class="btn btn-secondary"> Post </button>
+
+
+        </form>
+    </div>
+    <script>
+        var name = "{{ user.id }}";
+        document.getElementById("author").value = name;
+    </script>
+{% else %}
+    You are not allowed here!
+{% endif %}
+
+
+
+{% endblock %}

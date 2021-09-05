@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+    My Blog
+{% endblock %}
+
+
+{% block content %}
+
+{% if category_posts %}
+    <h2>Under {{ cats }} Category </h2>
+    <ul>
+    {% for post in category_posts %}
+        <li>
+            <a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a>  - {{ post.author }} - 
+            {{ post.post_date }}- {{ post.post_time }}
+            {% if user.is_authenticated %}
+                {% if user.id == post.author.id %}
+                    -<a href="{% url 'update_post' post.pk %}"> <small>(Edit Post)</small> </a> -
+                    <a href="{% url 'delete_post' post.pk %}"> <small>(Delete Post)</small> </a>
+                {% endif %}
+            {% endif %}
+            <br/>
+            {{ post.body|slice:":200"|safe }}
+        </li>
+
+    {% endfor %}
+
+    </ul>
+{% else %}
+<h2>This page not found ...</h2>
+{% endif %}
+{% endblock %}
