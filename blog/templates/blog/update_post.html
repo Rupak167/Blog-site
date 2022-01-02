@@ -8,7 +8,7 @@ Edit Post
 
 {% if user.is_authenticated %}
     {% if user.id == post.author.id %}
-            <h2>Edit your Post</h2>
+            <h2 class="d-block p-2 bg-dark text-white" style="font-family: 'Courier New', Courier, monospace ; text-align: center;">Edit your Post</h2>
             <br><br>
             <div class="form-group">
                 <form method="POST">

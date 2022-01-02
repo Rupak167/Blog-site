@@ -8,7 +8,7 @@ Delete Post
 
 {% if user.is_authenticated %}
     {% if user.id == post.author.id %}
-        <h2>Delete Post</h2>
+        <h2 class="d-block p-2 bg-dark text-white" style="font-family: 'Courier New', Courier, monospace ; text-align: center;">Delete Post</h2>
         <br><br>
         <h3>Delete: {{post.title}}</h3>
         <div class="form-group">

@@ -1,0 +1,85 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}
+    My Blog
+{% endblock %}
+
+{% block content%}
+<h1 class="d-block p-2 bg-dark text-white" style="font-family: 'Courier New', Courier, monospace ; text-align: center;">Profile</h1><br>
+<div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-2">
+         {% if page_user.profile_pic %}
+             <img src="{{ page_user.profile_pic.url }}" class="img-fluid rounded-circle" alt="...">
+          {% else %}
+             <img src="{% static 'blogsite/images/default.jpg' %}" class="img-fluid rounded-circle" alt="...">
+         {% endif %}
+      </div>
+      <div class="col-md-10">
+        <div class="card-body">
+          <h5 class="card-title">{{ page_user.user.first_name }} {{ page_user.user.last_name }}</h5>
+          <p class="small text-muted">
+ 
+             {% if page_user.website_url %}
+                   <a href="{{ page_user.website_url }}">Website </a> |
+             {% endif %}
+ 
+             {% if page_user.facebook_url %}
+                   <a href="{{ page_user.facebook_url }}">Facebook </a> |
+             {% endif %}
+ 
+             {% if page_user.twitter_url %}
+                   <a href="{{ page_user.twitter_url }}">Twitter </a> |
+             {% endif %}
+ 
+             {% if page_user.instagram_url %}
+                   <a href="{{ page_user.instagram_url }}">Instagram </a> |
+             {% endif %}
+ 
+             {% if page_user.linkedin_url %}
+                   <a href="{{ page_user.linkedin_url }}">Linkedin</a>
+             {% endif %}
+          </p>
+          <p class="card-text">{{ page_user.bio }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <ul style="list-style-type: none;">
+      {% for post in user_posts %}
+      <li>
+          <div class="col-md-6">
+              <div class="card flex-md-row mb-4 box-shadow h-md-250">
+              <div class="card-body d-flex flex-column align-items-start">
+                  <a class="text-decoration-none" href="{% url 'category' post.category %}">
+                      <strong class="d-inline-block mb-2 text-success">{{ post.category }}</strong>
+                  </a>
+                  <h3 class="mb-0">
+                  <a class="text-dark text-decoration-none" href="{% url 'article-detail' post.pk %}">{{ post.title }}</a>
+                  </h3>
+                  <div class="mb-1 text-muted">Author: 
+                          {{ post.author.first_name }} 
+                          {{ post.author.last_name }} <br> 
+                          {{ post.post_date }}-at {{ post.post_time }}
+                      {% if user.is_authenticated %}
+                      {% if user.id == post.author.id %}
+                          -<a class="text-decoration-none" href="{% url 'update_post' post.pk %}"> <small>(Edit Post)</small> </a> -
+                          <a class="text-decoration-none" href="{% url 'delete_post' post.pk %}"> <small>(Delete Post)</small> </a>
+                      {% endif %}
+      
+                  {% endif %}
+                  </div>
+                  <p class="card-text mb-auto">{{ post.caption }}</p>
+                  <a href="{% url 'article-detail' post.pk %}">Continue reading</a>
+              </div>
+              </div>
+          </div>
+      </li>
+      {% endfor %}
+  </ul>
+
+ 
+
+{% endblock %}

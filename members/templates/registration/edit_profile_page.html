@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+Edit Profile Page
+{% endblock %}
+
+{% block content%}
+
+
+{% if user.is_authenticated %}
+    {% if user.id == profile.user.id %}
+        <h2 class="d-block p-2 bg-dark text-white" style="font-family: 'Courier New', Courier, monospace ; text-align: center;">Edit Profile Page</h2>
+        <br>
+        <div class="form-group">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <button class="btn btn-secondary"> Update Profile </button>
+                <br><br><br>
+
+            </form>
+        </div>
+    
+    {% else %}
+        You are not the Correct User to edit this page.
+    {% endif %}
+
+{% else %}
+    You are not allowed here!
+{% endif %}
+
+{% endblock %}

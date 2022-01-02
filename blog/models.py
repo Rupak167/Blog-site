@@ -29,6 +29,8 @@ class Profile(models.Model):
 
     def __str__(self):
         return str(self.user)
+    def get_absolute_url(self):
+        return reverse('home') 
 
 class Post(models.Model):
     title = models.CharField(max_length=255)
@@ -41,7 +43,7 @@ class Post(models.Model):
     post_time = models.TimeField(auto_now_add = True)
     category = models.CharField(max_length=255,default="coding")
     likes = models.ManyToManyField(User,related_name="blog_posts")
-    caption = models.CharField(max_length=255)
+    caption = models.CharField(max_length=255,default="Click the link below to read the blog post..")
 
     def total_likes(self):
         return self.likes.count()
@@ -53,3 +55,14 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('article-detail', args=(str(self.id),))
         #return reverse('home') takes us to the home page
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post,related_name="comments",on_delete= models.CASCADE)
+    name = models.CharField(max_length=255)
+    body = models.TextField()
+    date_added = models.DateTimeField(auto_now_add = True)
+
+    def __str__(self):
+        return '%s - %s' % (self.post.title, self.name)
+    

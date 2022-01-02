@@ -1,12 +1,25 @@
 from django.shortcuts import render,get_object_or_404
 from django.views.generic import ListView,DetailView,CreateView,UpdateView,DeleteView
-from .models import Post,Category
-from .forms import PostFrom,EditFrom
+from .models import Post,Category,Comment
+from .forms import PostFrom,EditForm,CommentForm
 from django.urls import reverse_lazy,reverse
 from django.http import HttpResponseRedirect
 
 #def home(request):
 #    return render(request,'blog\home.html', {})
+
+
+class AddCommentView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    #fields= '__all__'
+    template_name = 'blog/add_comment.html'
+    success_url = reverse_lazy('home')
+
+    def form_valid(self,form):
+        form.instance.post_id = self.kwargs['pk']
+        return super().form_valid(form)
+    
 
 def LikeView(request,pk):
     post = get_object_or_404(Post,id = request.POST.get('post_id'))
@@ -60,6 +73,7 @@ def CategoryView(request,cats):
     category_posts = Post.objects.filter(category=cats)
     return render(request, 'blog/categories.html',{'cats':cats.title(),'category_posts':category_posts})
 
+
 def CategoryListView(request):
     cat_menu_list = Category.objects.all()
     return render(request, 'blog/category_list.html',{'cat_menu_list':cat_menu_list})
@@ -76,7 +90,7 @@ class AddCategoryView(CreateView):
 
 class UpdatePostView(UpdateView):
     model = Post
-    form_class = EditFrom
+    form_class = EditForm
     template_name = 'blog/update_post.html'
     #fields = ('title','title_tag','body')
 

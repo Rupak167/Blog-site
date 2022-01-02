@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+Add Comment
+{% endblock %}
+
+{% block content%}
+
+{% if user.is_authenticated %}
+    <h2>Add Comment</h2>
+    <br><br>
+    <div class="form-group">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button class="btn btn-secondary"> Add Comment </button>
+
+
+        </form>
+    </div>
+{% else %}
+ Login or Register to comment...
+{% endif %}
+  
+
+
+{% endblock %}
